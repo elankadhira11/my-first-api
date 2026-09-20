@@ -36,3 +36,13 @@ def get_users():
     users = cursor.fetchall()
     conn.close()
     return {"database_records": users}
+
+@app.delete("/delete-user/{user_id}")
+def delete_user(user_id: int):
+    conn = sqlite3.connect("data.db")
+    cursor = conn.cursor()
+    # SQL command to delete a specific row based on its ID
+    cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+    return {"message": f"Deleted user with ID: {user_id}"}
